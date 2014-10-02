@@ -1,3 +1,12 @@
+//Collision: Two items want the same spot 
+//Separate Chaining: Linked List of hash records, Items that collide are put in the same chain as each other
+//Open Addressing: Start looking at an index, if it isn't there, keep looking...
+//Linear Probing: If not here, go right 
+//Index = key % backingArraySize
+//BackingArray > 2 * numItems
+//BackingArraySize should always be a prime #
+//hash(key) = a*key where a > 1000 or some other big number... a is the multiplicative
+
 //You will need this so you can make a string to throw in
 // remove
 #include <string>
@@ -50,4 +59,5 @@ unsigned long HashTable<Key,T>::size(){
 template <class Key, class T>
 void HashTable<Key,T>::grow(){
   //TODO
+  //Call own insert method
 }
