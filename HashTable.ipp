@@ -13,51 +13,51 @@
 
 template <class Key, class T>
 HashTable<Key,T>::HashTable(){
-  //TODO
+	//TODO
 }
 
 template <class Key, class T>
 HashTable<Key,T>::~HashTable() {
-  //TODO
+	//TODO
 }
 
 template <class Key, class T>
 unsigned long HashTable<Key,T>::calcIndex(Key k){
-  //TODO
-  return numItems; //This indicates failure, since it is an impossible value
+	//TODO
+	return numItems; //This indicates failure, since it is an impossible value
 }
 
 template <class Key, class T>
 void HashTable<Key,T>::add(Key k, T x){
-  //TODO
+	//TODO
 }
 
 template <class Key, class T>
 void HashTable<Key,T>::remove(Key k){
-  //TODO
+	//TODO
 }
 
 template <class Key, class T>
 T HashTable<Key,T>::find(Key k){
-  //TODO
-  T dummy;
-  return dummy;
+	//TODO
+	T dummy;
+	return dummy;
 }
 
 template <class Key, class T>
 bool HashTable<Key,T>::keyExists(Key k){
-  //TODO
-  return false;
+	//TODO
+	return false;
 }
 
 template <class Key, class T>
 unsigned long HashTable<Key,T>::size(){
-  //TODO
-  return 0;
+	//TODO
+	return 0;
 }
 
 template <class Key, class T>
 void HashTable<Key,T>::grow(){
-  //TODO
-  //Call own insert method
+	//TODO
+	//Call own insert method
 }
