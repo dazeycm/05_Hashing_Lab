@@ -12,7 +12,8 @@
 #include <string>
 
 template <class Key, class T>
-HashTable<Key,T>::HashTable(){
+HashTable<Key, T>::HashTable(){
+
 	hashPrimeNum = 0;
 	numRemoved = 0;
 	numItems = 0;
@@ -21,19 +22,43 @@ HashTable<Key,T>::HashTable(){
 }
 
 template <class Key, class T>
-HashTable<Key,T>::~HashTable() {
+HashTable<Key, T>::~HashTable() {
+
 	delete[] backingArray;
 }
 
 template <class Key, class T>
-unsigned long HashTable<Key,T>::calcIndex(Key k){
-	
+unsigned long HashTable<Key, T>::calcIndex(Key k){
+
 	return hash(k) % backingArraySize;
 }
 
 template <class Key, class T>
-void HashTable<Key,T>::add(Key k, T x){
+void HashTable<Key, T>::add(Key k, T x){
 
+	int probeIndex = calcIndex(k);
+
+	if (((numItems + numRemoved) * 2) > backingArraySize)	{
+		grow();
+	}
+
+	while (!backingArray[probeIndex].isNull && !backingArray[probeIndex].isDel)	{
+		probeIndex = (1 + probeIndex) % backingArraySize;
+	}
+
+	if (backingArray[probeIndex].isDel)	{
+		numRemoved--;
+	}
+	else if (backingArray[probeIndex].isNull)	{
+		numItems++;
+	}
+
+	backingArray[probeIndex].k = k;
+	backingArray[probeIndex].x = x;
+
+	backingArray[probeIndex].isNull = false;
+	backingArray[probeIndex].isDel = false;
+			
 }
 
 template <class Key, class T>
@@ -43,16 +68,15 @@ void HashTable<Key,T>::remove(Key k){
 
 template <class Key, class T>
 T HashTable<Key,T>::find(Key k){
-	if (keyExists(k) == false)
-		throw std::string("Invalid key was used in find() method");
+	//if (keyExists(k) == false)
+		//throw std::string("Invalid key was used in find() method");
 	
 	int i = calcIndex(k);
 
 	while (!backingArray[i].isNull)	{
-		if (!backingArray[i].isNull && !backingArray[i].isDel)	{
+		if (backingArray[i].k == k && !backingArray[i].isDel)	{
 			return backingArray[i].x;
 		}
-
 		i = (1 + i) % backingArraySize;
 	}
 	
@@ -73,6 +97,22 @@ unsigned long HashTable<Key,T>::size(){
 
 template <class Key, class T>
 void HashTable<Key,T>::grow(){
-	//TODO USES NEW
-	//Call own insert method
+	hashPrimeNum++;
+
+	HashRecord *newArray = new HashRecord[hashPrimes[hashPrimeNum]];
+
+	for (unsigned int i = 0; i < backingArraySize; i++)	{
+		if (!backingArray[i].isNull && !backingArray[i].isDel)	{
+			add(backingArray[i].k, backingArray[i].x);
+			//int j = calcIndex(backingArray[i].k);
+			//while (!newArray[j].isNull)	{
+				//j = (1 + j) % hashPrimes[hashPrimeNum];
+			//}
+		}
+	}
+
+	backingArraySize = hashPrimes[hashPrimeNum];
+	numRemoved = 0;
+
+	backingArray = newArray;
 }
