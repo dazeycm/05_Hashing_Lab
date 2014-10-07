@@ -48,8 +48,9 @@ class HashTable : public USet <Key, T> {
   virtual ~HashTable();
 
 private:
-	//A pointer to the array that holds the hash table data
-  HashRecord* backingArray;
+	unsigned long hashPrimeNum;
+  //A pointer to the array that holds the hash table data
+	HashRecord* backingArray;
 
   //Whenever numItems + numRemoved >= backingArraySize/2, call
   // grow(). grow() should make a new backing array that is twice the

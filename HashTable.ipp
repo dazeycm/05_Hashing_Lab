@@ -13,9 +13,10 @@
 
 template <class Key, class T>
 HashTable<Key,T>::HashTable(){
+	hashPrimeNum = 0;
 	numRemoved = 0;
 	numItems = 0;
-	backingArraySize = hashPrimes[0];
+	backingArraySize = hashPrimes[hashPrimeNum];
 	backingArray = new HashRecord[backingArraySize];
 }
 
@@ -26,8 +27,8 @@ HashTable<Key,T>::~HashTable() {
 
 template <class Key, class T>
 unsigned long HashTable<Key,T>::calcIndex(Key k){
-	//int j = hash(k)%backingArraySize;
-	return 0;
+	
+	return hash(k) % backingArraySize;
 }
 
 template <class Key, class T>
@@ -42,14 +43,27 @@ void HashTable<Key,T>::remove(Key k){
 
 template <class Key, class T>
 T HashTable<Key,T>::find(Key k){
-	T dummy;
-	return dummy;
+	if (keyExists(k) == false)
+		throw std::string("Invalid key was used in find() method");
+	
+	int i = calcIndex(k);
+
+	while (!backingArray[i].isNull)	{
+		if (!backingArray[i].isNull && !backingArray[i].isDel)	{
+			return backingArray[i].x;
+		}
+
+		i = (1 + i) % backingArraySize;
+	}
+	
 }
 
 template <class Key, class T>
 bool HashTable<Key,T>::keyExists(Key k){
-	//TODO one line function after calling calcindex
-	return false;
+	int i = calcIndex(k);
+	if (backingArray[i].k == k)
+		return true;
+	else { return false; }
 }
 
 template <class Key, class T>
