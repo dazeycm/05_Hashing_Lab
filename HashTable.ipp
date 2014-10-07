@@ -13,18 +13,20 @@
 
 template <class Key, class T>
 HashTable<Key,T>::HashTable(){
-	//TODO
+	numRemoved = 0;
+	numItems = 0;
+	backingArray = new HashRecord[backingArraySize]];
+	backingArraySize = hashPrimes[0];
 }
 
 template <class Key, class T>
 HashTable<Key,T>::~HashTable() {
-	//TODO
+	delete[] backingArray;
 }
 
 template <class Key, class T>
 unsigned long HashTable<Key,T>::calcIndex(Key k){
-	//TODO
-	return numItems; //This indicates failure, since it is an impossible value
+	return hash(k)%backingArraySize;
 }
 
 template <class Key, class T>
@@ -39,14 +41,13 @@ void HashTable<Key,T>::remove(Key k){
 
 template <class Key, class T>
 T HashTable<Key,T>::find(Key k){
-	//TODO
 	T dummy;
 	return dummy;
 }
 
 template <class Key, class T>
 bool HashTable<Key,T>::keyExists(Key k){
-	//TODO
+	//TODO one line function after calling calcindex
 	return false;
 }
 
@@ -57,6 +58,6 @@ unsigned long HashTable<Key,T>::size(){
 
 template <class Key, class T>
 void HashTable<Key,T>::grow(){
-	//TODO
+	//TODO USES NEW
 	//Call own insert method
 }
