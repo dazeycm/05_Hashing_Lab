@@ -68,8 +68,8 @@ void HashTable<Key,T>::remove(Key k){
 
 template <class Key, class T>
 T HashTable<Key,T>::find(Key k){
-	//if (keyExists(k) == false)
-		//throw std::string("Invalid key was used in find() method");
+	if (keyExists(k) == false)
+		throw std::string("Invalid key was used in find() method");
 	
 	int i = calcIndex(k);
 
