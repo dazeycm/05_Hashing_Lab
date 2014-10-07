@@ -36,28 +36,28 @@ unsigned long HashTable<Key, T>::calcIndex(Key k){
 template <class Key, class T>
 void HashTable<Key, T>::add(Key k, T x){
 
-	int probeIndex = calcIndex(k);
+	int i = calcIndex(k);
 
 	if (((numItems + numRemoved) * 2) > backingArraySize)	{
 		grow();
 	}
 
-	while (!backingArray[probeIndex].isNull && !backingArray[probeIndex].isDel)	{
-		probeIndex = (1 + probeIndex) % backingArraySize;
+	while (!backingArray[i].isNull && !backingArray[i].isDel)	{
+		i = (1 + i) % backingArraySize;
 	}
 
-	if (backingArray[probeIndex].isDel)	{
+	if (backingArray[i].isDel)	{
 		numRemoved--;
 	}
-	else if (backingArray[probeIndex].isNull)	{
+	else if (backingArray[i].isNull)	{
 		numItems++;
 	}
 
-	backingArray[probeIndex].k = k;
-	backingArray[probeIndex].x = x;
+	backingArray[i].k = k;
+	backingArray[i].x = x;
 
-	backingArray[probeIndex].isNull = false;
-	backingArray[probeIndex].isDel = false;
+	backingArray[i].isNull = false;
+	backingArray[i].isDel = false;
 			
 }
 
@@ -85,9 +85,14 @@ T HashTable<Key,T>::find(Key k){
 template <class Key, class T>
 bool HashTable<Key,T>::keyExists(Key k){
 	int i = calcIndex(k);
-	if (backingArray[i].k == k)
-		return true;
-	else { return false; }
+	
+	while (!backingArray[i].isNull)	
+	{
+		if (backingArray[i].k == k)
+			return true;
+		i = (i + 1) % backingArraySize;
+	}
+	return false;
 }
 
 template <class Key, class T>
