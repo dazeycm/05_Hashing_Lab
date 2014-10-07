@@ -63,7 +63,18 @@ void HashTable<Key, T>::add(Key k, T x){
 
 template <class Key, class T>
 void HashTable<Key,T>::remove(Key k){
-	//TODO
+	int i = calcIndex(k);
+	
+	while (!backingArray[i].isNull)	{
+		if (backingArray[i].k == k && !backingArray[i].isDel)	{
+			backingArray[i].isDel = true;
+			numItems--;
+			numRemoved++;
+		}
+
+		i = (1 + i) % backingArraySize;
+	}
+
 }
 
 template <class Key, class T>
@@ -79,7 +90,6 @@ T HashTable<Key,T>::find(Key k){
 		}
 		i = (1 + i) % backingArraySize;
 	}
-	
 }
 
 template <class Key, class T>
@@ -88,8 +98,9 @@ bool HashTable<Key,T>::keyExists(Key k){
 	
 	while (!backingArray[i].isNull)	
 	{
-		if (backingArray[i].k == k)
+		if (backingArray[i].k == k && !backingArray[i].isDel)	{
 			return true;
+		}
 		i = (i + 1) % backingArraySize;
 	}
 	return false;
