@@ -15,8 +15,8 @@ template <class Key, class T>
 HashTable<Key,T>::HashTable(){
 	numRemoved = 0;
 	numItems = 0;
-	backingArray = new HashRecord[backingArraySize]];
 	backingArraySize = hashPrimes[0];
+	backingArray = new HashRecord[backingArraySize];
 }
 
 template <class Key, class T>
@@ -26,12 +26,13 @@ HashTable<Key,T>::~HashTable() {
 
 template <class Key, class T>
 unsigned long HashTable<Key,T>::calcIndex(Key k){
-	return hash(k)%backingArraySize;
+	//int j = hash(k)%backingArraySize;
+	return 0;
 }
 
 template <class Key, class T>
 void HashTable<Key,T>::add(Key k, T x){
-	//TODO
+
 }
 
 template <class Key, class T>
