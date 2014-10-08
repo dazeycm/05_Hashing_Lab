@@ -38,7 +38,7 @@ void HashTable<Key, T>::add(Key k, T x){
 
 	int i = calcIndex(k);
 
-	if (((numItems + numRemoved) * 2) > backingArraySize)	{
+	if (((numItems + numRemoved + 1) * 2) > backingArraySize)	{
 		grow();
 	}
 
@@ -119,11 +119,16 @@ void HashTable<Key,T>::grow(){
 
 	for (unsigned int i = 0; i < backingArraySize; i++)	{
 		if (!backingArray[i].isNull && !backingArray[i].isDel)	{
-			add(backingArray[i].k, backingArray[i].x);
-			//int j = calcIndex(backingArray[i].k);
-			//while (!newArray[j].isNull)	{
-				//j = (1 + j) % hashPrimes[hashPrimeNum];
-			//}
+			int j = calcIndex(backingArray[i].k);
+			while (!newArray[j].isNull)	{
+				j = (1 + j) % hashPrimes[hashPrimeNum];
+			}
+
+			newArray[j].k = backingArray[i].k;
+			newArray[j].x = backingArray[i].x;
+			
+			newArray[j].isNull = false;
+			newArray[j].isDel = false;
 		}
 	}
 
