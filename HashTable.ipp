@@ -41,7 +41,7 @@ unsigned long HashTable<Key, T>::calcIndex(Key k){
 template <class Key, class T>
 void HashTable<Key, T>::add(Key k, T x){
 
-	int i = calcIndex(k);
+	int i = hash(k) % backingArraySize;
 
 	if (((numItems + numRemoved + 1) * 2) > backingArraySize)	{
 		grow();
