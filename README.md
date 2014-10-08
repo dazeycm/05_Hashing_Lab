@@ -32,4 +32,4 @@ I believe that the keyExist functions is easy to understand, and could be easily
 
 #### 3. What is one question that confused you about this exercise, or one piece of advice you would share with students next semester?
 
-The only thing that confused me really was the calcIndex, and what it was supposed to do. I would recommend students that they look into how the calc index function works because after getting that started everything else is pretty easy. Also, my program still gets an error on the last check that I'm completely unable to resolve, even after debugging. 
+The only thing that confused me really was the calcIndex, and what it was supposed to do. I would recommend students that they look into how the calc index function works because after getting that started everything else is pretty easy. Also, my program still gets an error on the last check that I'm completely unable to resolve, even after debugging. I'm also not sure that I'm doing the linear probing correclty, but it seems to be working. 
