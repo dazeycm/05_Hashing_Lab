@@ -30,18 +30,13 @@ HashTable<Key, T>::~HashTable() {
 template <class Key, class T>
 unsigned long HashTable<Key, T>::calcIndex(Key k){
 
-	int i = hash(k);
-	while (!backingArray[i].isNull)	{
-		if (!backingArray[i].isDel && backingArray[i].k == k)
-			return i;
-		i = (1 + i) % backingArraySize;
-	}
+	return hash(k) % backingArraySize;
 }
 
 template <class Key, class T>
 void HashTable<Key, T>::add(Key k, T x){
 
-	int i = hash(k) % backingArraySize;
+	int i = calcIndex(k);
 
 	if (((numItems + numRemoved + 1) * 2) > backingArraySize)	{
 		grow();
