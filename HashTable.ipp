@@ -46,20 +46,23 @@ void HashTable<Key, T>::add(Key k, T x){
 		throw std::string("Key already exists!");
 	}
 
-	int i = calcIndex(k);
+	unsigned long int i = hash(k) % backingArraySize;
 
 	if (((numItems + numRemoved + 1) * 2) > backingArraySize)	{
 		grow();
 	}
 
+	while (!backingArray[i].isNull && !backingArray[i].isDel)	{
+		i = (i + 1) % backingArraySize;
+	}
+
 	if (backingArray[i].isDel)	{
 		numRemoved--;
+	}
+
+	if (backingArray[i].isNull)	{
 		numItems++;
 	}
-	
-	//if (backingArray[i].isNull)	{
-		//numItems++;
-	//}
 
 	backingArray[i].k = k;
 	backingArray[i].x = x;
@@ -73,14 +76,10 @@ template <class Key, class T>
 void HashTable<Key,T>::remove(Key k){
 	int i = calcIndex(k);
 	
-	while (!backingArray[i].isNull)	{
-		if (backingArray[i].k == k && !backingArray[i].isDel)	{
-			backingArray[i].isDel = true;
-			numItems--;
-			numRemoved++;
-		}
-
-		i = (1 + i) % backingArraySize;
+	if (i = numItems)	{
+		backingArray[i].isDel = true;
+		numItems--;
+		numRemoved++;
 	}
 
 }
@@ -90,28 +89,23 @@ T HashTable<Key,T>::find(Key k){
 	if (keyExists(k) == false)
 		throw std::string("Invalid key was used in find() method");
 	
-	int i = calcIndex(k);
+	unsigned long int i = calcIndex(k);
 
-	while (!backingArray[i].isNull)	{
-		if (backingArray[i].k == k && !backingArray[i].isDel)	{
-			return backingArray[i].x;
-		}
-		i = (1 + i) % backingArraySize;
+	if (i != numItems)	{
+		return backingArray[i].x;
 	}
+
+	throw std::string("Key does not exist in find() method");
 }
 
 template <class Key, class T>
 bool HashTable<Key,T>::keyExists(Key k){
-	int i = calcIndex(k);
-	
-	while (!backingArray[i].isNull)	
-	{
-		if (backingArray[i].k == k && !backingArray[i].isDel)	{
-			return true;
-		}
-		i = (i + 1) % backingArraySize;
+	unsigned long int i = calcIndex(k);
+	if (i == numItems)	{
+		return false;
 	}
-	return false;
+	
+	return true;
 }
 
 template <class Key, class T>
@@ -127,7 +121,7 @@ void HashTable<Key,T>::grow(){
 
 	for (unsigned int i = 0; i < backingArraySize; i++)	{
 		if (!backingArray[i].isNull && !backingArray[i].isDel)	{
-			int j = calcIndex(backingArray[i].k);
+			int j = hash(backingArray[i].k) % backingArraySize;
 			while (!newArray[j].isNull)	{
 				j = (1 + j) % hashPrimes[hashPrimeNum];
 			}
@@ -140,6 +134,7 @@ void HashTable<Key,T>::grow(){
 		}
 	}
 
+	delete[] backingArray;
 	backingArraySize = hashPrimes[hashPrimeNum];
 	numRemoved = 0;
 
