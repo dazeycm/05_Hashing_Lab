@@ -74,7 +74,7 @@ void HashTable<Key, T>::add(Key k, T x){
 
 template <class Key, class T>
 void HashTable<Key,T>::remove(Key k){
-	int i = calcIndex(k);
+	unsigned long int i = calcIndex(k);
 	
 	if (i != numItems)	{
 		backingArray[i].isDel = true;
@@ -105,7 +105,7 @@ bool HashTable<Key,T>::keyExists(Key k){
 		return false;
 	}
 	
-	return true;
+
 }
 
 template <class Key, class T>
@@ -117,16 +117,15 @@ template <class Key, class T>
 void HashTable<Key,T>::grow(){
 	hashPrimeNum++;
 
-	int newSize = hashPrimes[hashPrimeNum];
-	int oldSize = backingArraySize;
+	unsigned long int newSize = hashPrimes[hashPrimeNum];
+	unsigned long int oldSize = backingArraySize;
 	HashRecord *newArray = new HashRecord[hashPrimes[hashPrimeNum]];
 
 	backingArraySize = newSize;
-	numRemoved = 0;
 
-	for (unsigned int i = 0; i < backingArraySize; i++)	{
+	for (unsigned int i = 0; i < oldSize; i++)	{
 		if (!backingArray[i].isNull && !backingArray[i].isDel)	{
-			int j = hash(backingArray[i].k) % backingArraySize;
+			int j = calcIndex(backingArray[i].k);
 			while (!newArray[j].isNull)	{
 				j = (1 + j) % hashPrimes[hashPrimeNum];
 			}
@@ -139,6 +138,8 @@ void HashTable<Key,T>::grow(){
 		}
 	}
 
-	delete[] backingArray;
+	backingArraySize = hashPrimes[hashPrimeNum];
+	numRemoved = 0;
+
 	backingArray = newArray;
 }
