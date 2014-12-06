@@ -29,8 +29,14 @@ HashTable<Key, T>::~HashTable() {
 
 template <class Key, class T>
 unsigned long HashTable<Key, T>::calcIndex(Key k){
-
-	return hash(k) % backingArraySize;
+	unsigned long int i = hash(k) % backingArraySize;
+	while (!backingArray[i].isNull)	{
+		if (!backingArray[i].isDel && backingArray[i].k == k)	{
+			return i;
+		}
+		i = (i + 1) % backingArraySize;
+	}
+	return numItems;
 }
 
 template <class Key, class T>
