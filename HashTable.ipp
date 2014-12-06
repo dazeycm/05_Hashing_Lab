@@ -42,22 +42,24 @@ unsigned long HashTable<Key, T>::calcIndex(Key k){
 template <class Key, class T>
 void HashTable<Key, T>::add(Key k, T x){
 
+	if (keyExists(k))	{
+		throw std::string("Key already exists!");
+	}
+
 	int i = calcIndex(k);
 
 	if (((numItems + numRemoved + 1) * 2) > backingArraySize)	{
 		grow();
 	}
 
-	while (!backingArray[i].isNull && !backingArray[i].isDel)	{
-		i = (1 + i) % backingArraySize;
-	}
-
 	if (backingArray[i].isDel)	{
 		numRemoved--;
-	}
-	else if (backingArray[i].isNull)	{
 		numItems++;
 	}
+	
+	//if (backingArray[i].isNull)	{
+		//numItems++;
+	//}
 
 	backingArray[i].k = k;
 	backingArray[i].x = x;
