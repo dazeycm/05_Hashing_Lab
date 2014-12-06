@@ -119,15 +119,16 @@ void HashTable<Key,T>::grow(){
 
 	unsigned long int newSize = hashPrimes[hashPrimeNum];
 	unsigned long int oldSize = backingArraySize;
-	HashRecord *newArray = new HashRecord[hashPrimes[hashPrimeNum]];
+	HashRecord *newArray = new HashRecord[newSize];
 
 	backingArraySize = newSize;
+	numRemoved = 0;
 
 	for (unsigned int i = 0; i < oldSize; i++)	{
 		if (!backingArray[i].isNull && !backingArray[i].isDel)	{
-			int j = calcIndex(backingArray[i].k);
+			int j = hash(backingArray[i].k) % backingArraySize;
 			while (!newArray[j].isNull)	{
-				j = (1 + j) % hashPrimes[hashPrimeNum];
+				j = (1 + j) % newSize;
 			}
 
 			newArray[j].k = backingArray[i].k;
@@ -137,9 +138,7 @@ void HashTable<Key,T>::grow(){
 			newArray[j].isDel = false;
 		}
 	}
-
-	backingArraySize = hashPrimes[hashPrimeNum];
-	numRemoved = 0;
-
+	
+	delete[] backingArray;
 	backingArray = newArray;
 }
