@@ -126,7 +126,7 @@ void HashTable<Key,T>::grow(){
 
 	for (unsigned int i = 0; i < oldSize; i++)	{
 		if (!backingArray[i].isNull && !backingArray[i].isDel)	{
-			int j = hash(backingArray[i].k) % backingArraySize;
+			int j = hash(backingArray[i].k) % newSize;
 			while (!newArray[j].isNull)	{
 				j = (1 + j) % newSize;
 			}
